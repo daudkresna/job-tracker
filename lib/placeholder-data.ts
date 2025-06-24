@@ -1,0 +1,51 @@
+import { Job } from "./types";
+
+export const placeholderJobs: Job[] = [
+  {
+    id: "1",
+    title: "Software Engineer",
+    description: "Develop and maintain web applications.",
+    status: "Applied",
+    category: "Software",
+    link: "https://example.com/job1",
+    dateApplied: "2023-10-01",
+    company: "Tech Solutions Inc.",
+  },
+  {
+    id: "2",
+    title: "UI/UX Designer",
+    description: "Design user interfaces and improve user experience.",
+    status: "Interview",
+    category: "Design",
+    link: "https://example.com/job2",
+    dateApplied: "2023-10-05",
+    company: "Creative Agency Ltd.",
+  },
+  {
+    id: "3",
+    title: "Marketing Specialist",
+    description: "Plan and execute marketing campaigns.",
+    status: "Offer",
+    category: "Marketing",
+    link: "https://example.com/job3",
+    dateApplied: "2023-09-20",
+    company: "Global Marketing Co.",
+  },
+  {
+    id: "4",
+    title: "Sales Executive",
+    description: "Drive sales and build client relationships.",
+    status: "Rejected",
+    category: "Sales",
+    link: "https://example.com/job4",
+    dateApplied: "2023-08-15",
+  },
+  {
+    id: "5",
+    title: "Data Analyst",
+    description: "Analyze data to support business decisions.",
+    status: "Applied",
+    category: "Other",
+    link: "https://example.com/job5",
+  },
+];
