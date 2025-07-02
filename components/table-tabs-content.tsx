@@ -1,5 +1,6 @@
 import { TabsContent } from "@/components/ui/tabs";
 import JobListTable from "./job-list-table";
+import AddJobForm from "./add-job-form";
 const TableTabsContent = () => {
   return (
     <>
@@ -7,7 +8,7 @@ const TableTabsContent = () => {
         <JobListTable />
       </TabsContent>
       <TabsContent value="add">
-        <h1>Add Job</h1>
+        <AddJobForm />
       </TabsContent>
     </>
   );

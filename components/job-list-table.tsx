@@ -23,6 +23,7 @@ import { placeholderJobs } from "@/lib/placeholder-data";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Filter } from "lucide-react";
 import { Badge } from "./ui/badge";
+import { auth } from "@/auth";
 
 const invoices = [
   {
@@ -69,7 +70,7 @@ const invoices = [
   },
 ];
 
-const JobListTable = () => {
+const JobListTable = async () => {
   return (
     <Card>
       <CardHeader className="flex items-center justify-between">
