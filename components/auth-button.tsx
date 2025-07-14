@@ -28,7 +28,6 @@ const LogoutButton = () => {
 
 const AuthButton = async () => {
   const session = await auth();
-  console.log("Session:", session);
 
   if (!session) {
     return <LoginButton />;

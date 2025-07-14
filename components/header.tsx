@@ -1,5 +1,4 @@
 import { Briefcase } from "lucide-react";
-import Cards from "./cards";
 import AuthButton from "./auth-button";
 
 export default async function Header() {
@@ -16,7 +15,6 @@ export default async function Header() {
         </div>
         <AuthButton />
       </div>
-      <Cards />
     </>
   );
 }

@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Urbanist } from "next/font/google";
+import { Urbanist } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import Header from "@/components/header";
+import { TabsProvider } from "@/lib/context/tabs-context";
+import { Toaster } from "@/components/ui/sonner";
 
 const urbanist = Urbanist({
   variable: "--font-urbanist",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -29,7 +22,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${urbanist.className} antialiased`}>{children}</body>
+      <TabsProvider>
+        <body className={`${urbanist.className} antialiased`}>
+          <div className="flex flex-col min-h-screen bg-white p-6">
+            <Header />
+            {children}
+            <Toaster />
+          </div>
+        </body>
+      </TabsProvider>
     </html>
   );
 }

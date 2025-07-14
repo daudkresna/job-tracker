@@ -18,6 +18,7 @@ model User {
   id            String          @id @default(cuid())
   name          String?
   email         String          @unique
+  password      String?
   emailVerified DateTime?
   image         String?
   Jobs          Job[]           @relation("UserJobs")
@@ -68,17 +69,20 @@ model VerificationToken {
 }
 
 enum Status {
-  APPLIED
-  INTERVIEW
-  OFFER
-  REJECTED
+  Applied
+  Interview
+  Offer
+  Rejected
 }
+
 
 model Job {
   id        String   @id @default(cuid())
   title     String
-  company   String
-  status    Status   @default(APPLIED)
+  description String?
+  company   String?
+  status    Status   @default(Applied)
+  category  String?
   location  String?
   link      String?
   notes     String?

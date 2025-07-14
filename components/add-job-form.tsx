@@ -1,5 +1,7 @@
 "use client";
 
+import { useActionState, useEffect } from "react";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -28,23 +30,13 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Button } from "./ui/button";
+import { jobSchema } from "@/lib/types";
+import { addJob } from "@/lib/actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useTabs } from "@/lib/context/tabs-context";
 
 const AddJobForm = () => {
-  const jobSchema = z.object({
-    jobTitle: z.string().min(3, "Job title is required"),
-    jobCategory: z.union([
-      z.literal("Technology"),
-      z.literal("Marketing"),
-      z.literal("Sales"),
-      z.literal("Design"),
-      z.literal("Finance"),
-      z.literal("Other"),
-    ]),
-    jobDescription: z.string().min(1, "Job description is required"),
-    jobStatus: z.string().min(1, "Job status is required"),
-    companyName: z.string().min(1, "Company name is required"),
-  });
-
   const form = useForm<z.infer<typeof jobSchema>>({
     resolver: zodResolver(jobSchema),
     defaultValues: {
@@ -56,10 +48,19 @@ const AddJobForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof jobSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const tabs = useTabs();
+  const router = useRouter();
+
+  async function onSubmit(values: z.infer<typeof jobSchema>) {
+    form.reset();
+    const result = await addJob(values);
+    if (result.success) {
+      toast.success(result.message || "Job added successfully!");
+      tabs?.handleTabChange("jobs");
+    } else {
+      toast.error(result.message || "Failed to add job");
+    }
+    router.refresh();
   }
 
   return (
@@ -168,9 +169,7 @@ const AddJobForm = () => {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="Applied">Applied</SelectItem>
-                            <SelectItem value="Interviewing">
-                              Interviewing
-                            </SelectItem>
+                            <SelectItem value="Interview">Interview</SelectItem>
                             <SelectItem value="Offer">Offer</SelectItem>
                             <SelectItem value="Rejected">Rejected</SelectItem>
                           </SelectContent>

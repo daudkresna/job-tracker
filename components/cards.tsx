@@ -1,8 +1,22 @@
+import { auth } from "@/auth";
 import { Card, CardTitle } from "@/components/ui/card";
-import { getStatusCounts, statusColors } from "@/lib/utils";
+import { Job } from "@/generated/prisma/wasm";
+import {
+  getAllJobStatusCounts,
+  getStatusCounts,
+  statusColors,
+} from "@/lib/utils";
+import { prisma } from "@/prisma";
 
-const Cards = () => {
-  const statusCounts = getStatusCounts();
+const Cards = async () => {
+  const session = await auth();
+  const allJobs: Job[] = await prisma.job.findMany({
+    where: {
+      userId: session?.user?.id,
+    },
+  });
+  const statusCounts = getAllJobStatusCounts({ allJobs });
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
       <Card className="p-4">
