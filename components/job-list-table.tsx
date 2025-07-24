@@ -21,33 +21,56 @@ import {
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Badge } from "./ui/badge";
 
-//Placeholder data
-import { placeholderJobs } from "@/lib/placeholder-data";
-
 // Icons
 import { Filter } from "lucide-react";
 
 import { auth } from "@/auth";
-import { prisma } from "@/prisma";
 import { getDateString } from "@/lib/utils";
+import Link from "next/link";
+import Search from "./search";
+import { fetchFilteredJob, fetchTotalPages } from "@/lib/data";
+import PaginationButton from "./pagination-button";
 
-const JobListTable = async () => {
+export type JobListTableProps = {
+  query: string;
+  pageNumber: number;
+};
+
+const JobListTable = async ({ query, pageNumber }: JobListTableProps) => {
   const session = await auth();
-  // Fetch jobs from the database
-  const allJobs = await prisma.job.findMany({
-    where: {
-      userId: session?.user?.id,
-    },
-  });
 
-  if (!allJobs || allJobs.length === 0) {
+  const filteredJobs = await fetchFilteredJob(query, pageNumber);
+  const totalPages = await fetchTotalPages(query);
+
+  if (!filteredJobs || filteredJobs.length === 0) {
+    return (
+      <Card>
+        <CardHeader className="flex items-center justify-between">
+          <div className="w-fit">
+            <h2 className="text-lg font-bold">Job List</h2>
+            <p className="text-sm text-muted-foreground">
+              A list of all jobs with their details.
+            </p>
+          </div>
+          <Search />
+          <div>
+            {/* Filter */}
+            <Filter className="h-5 w-5 text-muted-foreground cursor-pointer " />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <p className="text-center text-gray-500">
+            No jobs found matching your search criteria.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+  if (!session?.user?.id) {
     return (
       <Card>
         <CardHeader>
-          <h2 className="text-lg font-bold">No Jobs Found</h2>
-          <p className="text-sm text-muted-foreground">
-            You have not added any jobs yet.
-          </p>
+          <h2 className="text-lg font-bold">User Not Authenticated</h2>
         </CardHeader>
       </Card>
     );
@@ -61,6 +84,7 @@ const JobListTable = async () => {
             A list of all jobs with their details.
           </p>
         </div>
+        <Search />
         <div>
           {/* Filter */}
           <Filter className="h-5 w-5 text-muted-foreground cursor-pointer" />
@@ -76,10 +100,11 @@ const JobListTable = async () => {
               <TableHead>Category</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date Added</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {allJobs.map((job) => {
+            {filteredJobs.map((job) => {
               // Format the date
               const formattedDate = getDateString(job.createdAt);
               return (
@@ -97,7 +122,7 @@ const JobListTable = async () => {
                   <TableCell>
                     <Select value={job.status.toLowerCase()}>
                       <SelectTrigger className="w-[140px]">
-                        <SelectValue placeholder="Select a fruit" />
+                        <SelectValue placeholder="Select a status" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
@@ -111,7 +136,14 @@ const JobListTable = async () => {
                     </Select>
                   </TableCell>
                   <TableCell>{formattedDate}</TableCell>
-                  <TableCell>{job.link}</TableCell>
+                  <TableCell className="text-left">
+                    <Link
+                      href={`/edit/${job.id}`}
+                      className="text-blue-500 hover:underline text-center"
+                    >
+                      Edit
+                    </Link>
+                  </TableCell>
                 </TableRow>
               );
             })}
@@ -123,6 +155,7 @@ const JobListTable = async () => {
             </TableRow>
           </TableFooter> */}
         </Table>
+        <PaginationButton currentPage={pageNumber} totalPages={totalPages} />
       </CardContent>
     </Card>
   );

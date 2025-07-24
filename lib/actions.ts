@@ -62,3 +62,35 @@ export async function addJob(
   }
   return { success: false, message: "Failed to create job" };
 }
+
+export async function changeJobStatus(formData: FormData) {
+  const jobId = formData.get("jobId")?.toString();
+  const status = formData.get("status")?.toString() as Status;
+
+  console.log("Changing job status for jobId:", jobId, "to status:", status);
+
+  // const session = await auth();
+  // if (!session?.user?.id) {
+  //   throw new Error("User not authenticated");
+  // }
+
+  // try {
+  //   const job = await prisma.job.update({
+  //     where: { id: jobId, userId: session.user.id },
+  //     data: { status },
+  //   });
+
+  //   if (job) {
+  //     revalidatePath("/");
+  //     return { success: true, message: "Job status updated successfully!" };
+  //   }
+  // } catch (error) {
+  //   return {
+  //     success: false,
+  //     message: `Failed to update job status: ${
+  //       error instanceof Error ? error.message : "Unknown error"
+  //     }`,
+  //   };
+  // }
+  // return { success: false, message: "Failed to update job status" };
+}
