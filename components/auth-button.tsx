@@ -1,15 +1,20 @@
 import { auth, signIn, signOut } from "@/auth";
+import Link from "next/link";
+import { Button } from "./ui/button";
 
 const LoginButton = () => {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signIn("github", { redirectTo: "/" });
-      }}
-    >
-      <button type="submit">Sign In with GitHub</button>
-    </form>
+    // <form
+    //   action={async () => {
+    //     "use server";
+    //     await signIn("github", { redirectTo: "/" });
+    //   }}
+    // >
+    //   <button type="submit">Sign In with GitHub</button>
+    // </form>
+    <Link href="/login">
+      <Button variant={"default"}>Sign In</Button>
+    </Link>
   );
 };
 
@@ -21,7 +26,7 @@ const LogoutButton = () => {
         await signOut();
       }}
     >
-      <button type="submit">Sign Out</button>
+      <Button variant={"default"}>Sign Out</Button>
     </form>
   );
 };

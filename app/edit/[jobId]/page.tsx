@@ -14,13 +14,13 @@ export default async function EditJobPage({
     );
   }
 
-  const { jobId } = params;
+  const { jobId } = await params;
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">{params.jobId}</h1>
+      <h1 className="text-2xl font-bold mb-6">{jobId}</h1>
       {/* Add your edit job form component here, passing the jobId as a prop */}
-      {/* <EditJobForm jobId={params.jobId} /> */}
+      {/* <EditJobForm jobId={jobId} /> */}
     </div>
   );
 }

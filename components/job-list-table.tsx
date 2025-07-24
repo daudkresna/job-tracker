@@ -2,22 +2,12 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Badge } from "./ui/badge";
 
@@ -25,7 +15,7 @@ import { Badge } from "./ui/badge";
 import { Filter } from "lucide-react";
 
 import { auth } from "@/auth";
-import { getDateString } from "@/lib/utils";
+import { badgeColors, getDateString } from "@/lib/utils";
 import Link from "next/link";
 import Search from "./search";
 import { fetchFilteredJob, fetchTotalPages } from "@/lib/data";
@@ -120,20 +110,9 @@ const JobListTable = async ({ query, pageNumber }: JobListTableProps) => {
                     <Badge variant={"default"}>{job.category}</Badge>
                   </TableCell>
                   <TableCell>
-                    <Select value={job.status.toLowerCase()}>
-                      <SelectTrigger className="w-[140px]">
-                        <SelectValue placeholder="Select a status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Job Status</SelectLabel>
-                          <SelectItem value="applied">Applied</SelectItem>
-                          <SelectItem value="interview">Interview</SelectItem>
-                          <SelectItem value="offer">Offer</SelectItem>
-                          <SelectItem value="rejected">Rejected</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Badge className={badgeColors[job.status]}>
+                      {job.status}
+                    </Badge>
                   </TableCell>
                   <TableCell>{formattedDate}</TableCell>
                   <TableCell className="text-left">
